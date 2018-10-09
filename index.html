@@ -30,18 +30,8 @@ Your browser does not support the HTML5 canvas tag.</canvas>
 </div>
 
 <p>
-<input type="checkbox" id="mouseover">Mouseover<br><input type="checkbox" id="time">Time<br>
+<input type="checkbox" id="mouseover">Mouseover<br>
 </p>
-
-<p>
-<button onclick="toggleInfo()">Info</button>
-<div id="info">
-<p>Spiral commmander allows you to set waypoints on the map image to the right for the spiral to visit.</p>
-
-<p> The map is a visualization of roughly 1 million starting co-ordinates, graphed by image complexity (estimated by PNG file size). Press any number key then click with the mouse on the map (the image to the right) to set a waypoint there. You can select any waypoint with the corresponding number key. When selected (show by the square), waypoints can be replaced with a click, adjusted with the arrow keys, or deleted with backspace. The animation to the left will interpolate the path between the waypoints in sequence.</p>
-</div>
-</p>
-
 
 <a href="https://twitter.com/Aeium?ref_src=twsrc%5Etfw" class="twitter-follow-button" data-show-count="false">Follow @Aeium</a><script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 
@@ -152,7 +142,7 @@ var rotYringScalar      = 60
 
 var animateTime = false
 
-
+/*
 var checkbox = document.getElementById('time');
 checkbox.addEventListener("change", function(){
   var isChecked = checkbox.checked;
@@ -161,7 +151,7 @@ checkbox.addEventListener("change", function(){
   }else{ //unchecked
     animateTime = false
   }
-});
+});*/
 
 var mouseCheck = document.getElementById('mouseover')
 
