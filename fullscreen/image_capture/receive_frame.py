@@ -4,6 +4,8 @@ Writes out data received from websocketd on stdin as
 png frames.
 '''
 
+# modified from: https://gist.github.com/payload/aaf97ba000c789e0a8141d58ded1218b
+
 import time
 import base64
 import binascii
