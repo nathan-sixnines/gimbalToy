@@ -46,9 +46,14 @@ Your browser does not support the HTML5 canvas tag.</canvas>
 
 <img id="map" src="https://i.imgur.com/HC31QPv.png" hidden>
 
-    <script src="https://cdn.rawgit.com/mrdoob/three.js/master/build/three.min.js"></script>
-    <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/libs/stats.min.js"></script>
-    <script src="https://cdn.rawgit.com/mrdoob/three.js/master/examples/js/controls/OrbitControls.js"></script>
+<script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@99/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@99/examples/jsm/"
+    }
+  }
+</script>
 
 <script>
 /*
@@ -59,6 +64,8 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 // Set the scene size.
 const WIDTH = 810;
