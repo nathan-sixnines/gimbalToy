@@ -41,8 +41,8 @@ Your browser does not support the HTML5 canvas tag.</canvas>
 
 <iframe src="https://www.facebook.com/plugins/share_button.php?href=https%3A%2F%2Faeium.github.io%2FgimbalToy&layout=button&size=small&mobile_iframe=true&width=59&height=20&appId" width="59" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
 
-<button style="background-image:url('https://raw.githubusercontent.com/Aeium/gimbalToy/master/save_to_url2.png'); width:108px;height:20px;  border: none; padding: 0;" onclick="saveState(fullScreen = false)" /button>
-<button style="background-image:url('https://raw.githubusercontent.com/Aeium/gimbalToy/master/FS_url.png'); width:108px;height:20px;  border: none; padding: 0;" onclick="saveState(fullScreen = true)" /button>
+<button id="saveStateButton" style="background-image:url('https://raw.githubusercontent.com/Aeium/gimbalToy/master/save_to_url2.png'); width:108px;height:20px;  border: none; padding: 0;"></button>
+<button id="saveStateFSButton" style="background-image:url('https://raw.githubusercontent.com/Aeium/gimbalToy/master/FS_url.png'); width:108px;height:20px;  border: none; padding: 0;"></button>
 
 <img id="map" src="https://i.imgur.com/HC31QPv.png" hidden>
 
@@ -1092,6 +1092,14 @@ function saveState(fullScreen) {
         prompt("URL (copy):", "https://nathan-sixnines.github.io/gimbalToy/" + urlString);
     }
 }
+
+document.getElementById('saveStateButton').addEventListener('click', function() {
+    saveState(false);
+});
+
+document.getElementById('saveStateFSButton').addEventListener('click', function() {
+    saveState(true);
+});
 // this as far as I can tell does nothing and doesn't work.
 /*
 document.getElementById("container").addEventListener("load", function(event){
@@ -1832,7 +1840,7 @@ draw(500,500, true)
 var waypointsString = getParameterByName('w')
 if(waypointsString != null){
 
-    waypointObject =  JSON.parse(waypointsString)
+    var waypointObject =  JSON.parse(waypointsString)
     
     for (var i = 0; i < 10; i++){
         
