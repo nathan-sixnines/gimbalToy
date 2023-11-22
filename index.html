@@ -46,6 +46,16 @@ Your browser does not support the HTML5 canvas tag.</canvas>
 
 <img id="map" src="https://i.imgur.com/HC31QPv.png" hidden>
 
+
+<script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.120.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.120.0/examples/jsm/"
+      }
+    }
+  </script>
+
 <script type="module">
 /*
 Copyright 2018 Nathan Epstein
@@ -55,9 +65,8 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.*/
 
-import * as THREE from 'https://cdn.jsdelivr.net/npm/three@latest/build/three.module.js';
-import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@latest/examples/jsm/controls/OrbitControls.js';
-
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
 // Set the scene size.
 const WIDTH = 810;
@@ -81,7 +90,7 @@ const scene = new THREE.Scene();
 // Add the camera to the scene.
 scene.add(camera);
 
-controls = new THREE.OrbitControls(camera, renderer.domElement);
+const controls = new OrbitControls(camera, renderer.domElement);
 
 // Start the renderer.
 renderer.setSize(WIDTH, HEIGHT);
@@ -261,8 +270,8 @@ var notes = []
 
 // calculate frequencies for synth
 
-circleArcLength = 2 * Math.PI
-circleFreq      = 1 / circleArcLength
+const circleArcLength = 2 * Math.PI
+const circleFreq      = 1 / circleArcLength
 
 for (var n = -24-9; n < 0-9; n++){  // 24 from middle c, then 9 from middle a (440)
 
@@ -278,7 +287,7 @@ var angleOsc = audioCtx.createOscillator();
 
 var fundemental = notes[0]
 
-filter = audioCtx.createBiquadFilter();
+let filter = audioCtx.createBiquadFilter();
 filter.type = "lowpass"
 
 filter.frequency.setValueAtTime(0, audioCtx.currentTime);  // this is how i am going to turn the notes off because other ways are annoying
@@ -459,11 +468,11 @@ function drawSpiral(eventX, eventY){
     var xScal = pixX / 1080
     var yScal = pixY / 1080
    
-    sizeValue = distance1(pixX, pixY, 540, 540)
+    var sizeValue = distance1(pixX, pixY, 540, 540)
     
     sizeValue = xScal // Math.sin(pixX / 250)   //sizeValue / 540
     
-    angle = yScal // Math.sin(pixY / 250)//Math.atan2( 540 - pixY, 540 - pixX) // (Math.PI)
+    var angle = yScal // Math.sin(pixY / 250)//Math.atan2( 540 - pixY, 540 - pixX) // (Math.PI)
 
     //angleOsc.type = 'sawtooth'
     
@@ -487,8 +496,8 @@ function drawSpiral(eventX, eventY){
 
     //angleOsc.start();
        
-    rho = sizeValue//console.log(angle)
-    phi = angle
+    var rho = sizeValue//console.log(angle)
+    var phi = angle
     
     ctx1.font = "25px Arial";
     //ctx1.fillText("Follow Me on Twitter!!",110,530);
@@ -506,14 +515,14 @@ function drawSpiral(eventX, eventY){
     for (var i = 1; i < numRings; i++){
     
             
-            rotParam1  = (sizeValue*i+(1-sizeValue)*(numRings-i))* angle
-            rotParam1i = (sizeValue*(numRings-i)+(1-sizeValue)*(i))* angle
+            var rotParam1  = (sizeValue*i+(1-sizeValue)*(numRings-i))* angle
+            var rotParam1i = (sizeValue*(numRings-i)+(1-sizeValue)*(i))* angle
          
             
-            rotParam2  = (sizeValue*(numRings-i)+(1-sizeValue)*i)* angle
-            rotParam2i = (sizeValue*(i)+(1-sizeValue)*(numRings-i))* angle
+            var rotParam2  = (sizeValue*(numRings-i)+(1-sizeValue)*i)* angle
+            var rotParam2i = (sizeValue*(i)+(1-sizeValue)*(numRings-i))* angle
         
-            rot2 = xScal * i + (yScal * i)
+            var rot2 = xScal * i + (yScal * i)
             
             
         
@@ -1056,81 +1065,31 @@ document.getElementById("container").addEventListener('mousemove', function(even
 		//xhttp.send()
 	
 
-function saveState(fullScreen){
+function saveState(fullScreen) {
 
-    //var urlString = "?x1="+ oldRetX.toString() + "&y1=" + oldRetY.toString() + "&x2=" + retX.toString() + "&y2=" + retY.toString() //heatmap/color/" + rule.toString() + "/" + BitArraytob64(startArray);
-     
-    var cameraMat       = null
-    var cameraString    = null
-    var waypointString  = null 
-    var urlString       = null
-    
-    if(fullScreen){
-
-    console.log(waypoints)
-    
-    cameraMat = camera.matrix.toArray()
-    
-    cameraMat = cameraMat.map(function(each_element){
+    var cameraMat = camera.matrix.toArray();
+    cameraMat = cameraMat.map(function(each_element) {
         return Number(each_element.toFixed(4));
     });
 
-    
-    cameraString = JSON.stringify(cameraMat);
-    
-    waypointString =  JSON.stringify(waypoints)
-    
-    durationString = duration.toString()
-    
-    urlString = "?&d=" + durationString 
-    
-    if(numRings != 50){
-    
-        urlString += "&r=" + numRings.toString()
-    
-    }
-    
-    urlString += "&w=" + waypointString + "&c=" + cameraString
-    
-    console.log(urlString)
-    
-    prompt("Fullscreen URL (copy):", "https://aeium.github.io/gimbalToy/fullscreen/" + urlString);
-    
-    //window.history.pushState( null, null,  urlString);
-    
-    }else{
-    
-    console.log(waypoints)
-    
-    cameraMat = camera.matrix.toArray()
-    
-    cameraMat = cameraMat.map(function(each_element){
-        return Number(each_element.toFixed(4));
-    });
+    var cameraString = JSON.stringify(cameraMat);
+    var waypointString = JSON.stringify(waypoints);
+    var durationString = duration.toString();
 
-    
-    cameraString = JSON.stringify(cameraMat);
-    
-    waypointString =  JSON.stringify(waypoints)
-    
-    durationString = duration.toString()
-    
-    urlString = "?&d=" + durationString 
-    
-    if(numRings != 50){
-    
-        urlString += "&r=" + numRings.toString()
-    
+    var urlString = "?&d=" + durationString;
+
+    if (numRings != 50) {
+        urlString += "&r=" + numRings.toString();
     }
-    
-    urlString += "&w=" + waypointString + "&c=" + cameraString
-    
-    console.log(urlString)
-    
-    prompt("URL (copy):", "https://aeium.github.io/gimbalToy/" + urlString);
-    
-    //window.history.pushState( null, null,  urlString);
-    
+
+    urlString += "&w=" + waypointString + "&c=" + cameraString;
+
+    console.log(urlString);
+
+    if (fullScreen) {
+        prompt("Fullscreen URL (copy):", "https://nathan-sixnines.github.io/gimbalToy/fullscreen/" + urlString);
+    } else {
+        prompt("URL (copy):", "https://nathan-sixnines.github.io/gimbalToy/" + urlString);
     }
 }
 // this as far as I can tell does nothing and doesn't work.
@@ -1339,7 +1298,7 @@ function resetAnimation(){
             //update = true
             animLoop = true
  
-            pointsListBool = arrayOr(pointsList) //pointsList.reduce(add, 0);
+            var pointsListBool = arrayOr(pointsList) //pointsList.reduce(add, 0);
             
             //console.log("pointsListBool")
             //console.log(pointsListBool)
@@ -1427,7 +1386,7 @@ function smooth(){
             
             for(var i = 0; i < lookup.length; i++){
             
-                addVec = {'x' : 0, 'y' : 0}
+                var addVec = {'x' : 0, 'y' : 0}
                 addVec.x = averageX - waypoints[lookup[i]].x
                 addVec.y = averageY - waypoints[lookup[i]].y
             
@@ -1468,9 +1427,9 @@ function smooth(){
    // var start = waypoints[nextList[section -1]]
         
 
-    position = mod(smoothLoopState,duration*2) / duration * Math.PI
+    var position = mod(smoothLoopState,duration*2) / duration * Math.PI
     
-    scale = new Array(slices.length).fill(0);
+    var scale = new Array(slices.length).fill(0);
 
     var scaleSum = 0
     
@@ -1484,7 +1443,7 @@ function smooth(){
     
         var scaleVar2 = Math.abs(Math.sin(close))
         
-        close2 = Math.abs(Math.sin(close))
+        var close2 = Math.abs(Math.sin(close))
         
         var scaleVar = scaleVar2 * close2 + scaleVar1 * (1-close2) 
     
